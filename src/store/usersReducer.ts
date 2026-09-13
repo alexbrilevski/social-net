@@ -1,3 +1,5 @@
+import type { Dispatch } from "redux";
+import { usersAPI } from "../api/api";
 import type { User } from "../models/user";
 import type { RootAction } from "./store";
 
@@ -90,6 +92,7 @@ export const usersReducer = (
   }
 };
 
+// Action Creators
 export const setUsers = (users: User[]) => {
   return { type: USERS_ACTIONS.SET_USERS, users };
 };
@@ -113,4 +116,16 @@ export const toggleIsFetching = (isFetching: boolean) => {
 };
 export const toggleFollowingProgress = (inProgress: boolean, userId: number) => {
   return { type: USERS_ACTIONS.TOGGLE_FOLLOWING_PROGRESS, inProgress, userId };
+};
+
+// Thunk Creators
+export const fetchUsers = (currentPage: number, pageSize: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(toggleIsFetching(true));
+    usersAPI.getUsers(currentPage, pageSize).then(data => {
+      dispatch(toggleIsFetching(false));
+      dispatch(setUsers(data.items));
+      dispatch(setTotalUsersCount(data.totalCount));
+    });
+  };
 };

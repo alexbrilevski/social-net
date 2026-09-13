@@ -1,15 +1,12 @@
 import { Component } from "react";
 import { connect } from "react-redux";
-import type { User } from "../../models/user";
-import { followAPI, usersAPI } from "../../api/api";
+import { followAPI } from "../../api/api";
 import type { RootState } from "../../store/store";
 import {
+  fetchUsers,
   followUser,
   setCurrentPage,
-  setTotalUsersCount,
-  setUsers,
   toggleFollowingProgress,
-  toggleIsFetching,
   unfollowUser,
   type UsersPageState
 } from "../../store/usersReducer";
@@ -19,12 +16,10 @@ import { UsersList } from "./UsersList";
 type MapStateToProps = UsersPageState;
 
 type MapDispatchToProps = {
-  setUsers: (users: User[]) => void,
-  setTotalUsersCount: (totalCount: number) => void,
+  fetchUsers: (currentPage: number, pageSize: number) => void,
   setCurrentPage: (pageNumber: number) => void,
   followUser: (id: number) => void,
   unfollowUser: (id: number) => void,
-  toggleIsFetching: (isFetching: boolean) => void,
   toggleFollowingProgress: (inProgress: boolean, userId: number) => void,
 };
 
@@ -44,22 +39,13 @@ const mapStateToProps = (state: RootState): MapStateToProps => {
 class UsersContainer extends Component<UsersContainerProps> {
   componentDidMount() {
     if (this.props.users.length === 0) {
-      this.props.toggleIsFetching(true);
-      usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-        this.props.toggleIsFetching(false);
-        this.props.setUsers(data.items);
-        this.props.setTotalUsersCount(data.totalCount);
-      });
+      this.props.fetchUsers(this.props.currentPage, this.props.pageSize);
     }
   }
 
   setCurrentPage = (pageNumber: number) => {
-    this.props.toggleIsFetching(true);
-    usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-      this.props.toggleIsFetching(false);
-      this.props.setUsers(data.items);
-      this.props.setCurrentPage(pageNumber);
-    });
+    this.props.fetchUsers(this.props.currentPage, this.props.pageSize);
+    this.props.setCurrentPage(pageNumber);
   }
 
   followUser(userId: number) {
@@ -98,11 +84,9 @@ class UsersContainer extends Component<UsersContainerProps> {
 };
 
 export default connect(mapStateToProps, {
-  setUsers,
-  setTotalUsersCount,
+  fetchUsers,
   setCurrentPage,
   followUser,
   unfollowUser,
-  toggleIsFetching,
   toggleFollowingProgress,
 })(UsersContainer);
