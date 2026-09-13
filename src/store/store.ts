@@ -1,4 +1,5 @@
-import { combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import { thunk, type ThunkAction } from "redux-thunk";
 import { authReducer, type AuthAction } from "./authReducer";
 import profileReducer, { type ProfileAction } from "./profileReducer";
 import messagesReducer, { type MessagesAction } from "./messagesReducer";
@@ -12,6 +13,12 @@ export type RootAction =
   | ProfileAction
   | MessagesAction
   | UserActions;
+export type RootThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  RootAction
+>;
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -20,4 +27,4 @@ const rootReducer = combineReducers({
   usersPage: usersReducer,
 });
 
-export const store = createStore(rootReducer);
+export const store = createStore(rootReducer, applyMiddleware(thunk));
