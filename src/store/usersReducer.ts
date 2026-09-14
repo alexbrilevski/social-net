@@ -129,22 +129,22 @@ export const fetchUsers = (currentPage: number, pageSize: number): RootThunk => 
   };
 };
 
-export const follow = (user_ID: number): RootThunk => {
+export const follow = (userId: number): RootThunk => {
   return (dispatch) => {
-    dispatch(toggleFollowingProgress(true, user_ID));
-    followAPI.follow(user_ID).then(data => {
-      if (data.resultCode === 0) dispatch(followUser(user_ID));
-      dispatch(toggleFollowingProgress(false, user_ID));
+    dispatch(toggleFollowingProgress(true, userId));
+    followAPI.follow(userId).then(data => {
+      if (data.resultCode === 0) dispatch(followUser(userId));
+      dispatch(toggleFollowingProgress(false, userId));
     });
   };
 };
 
-export const unfollow = (user_ID: number): RootThunk => {
+export const unfollow = (userId: number): RootThunk => {
   return (dispatch) => {
-    dispatch(toggleFollowingProgress(true, user_ID));
-    followAPI.unfollow(user_ID).then(data => {
-      if (data.resultCode === 0) dispatch(unfollowUser(user_ID));
-      dispatch(toggleFollowingProgress(false, user_ID));
+    dispatch(toggleFollowingProgress(true, userId));
+    followAPI.unfollow(userId).then(data => {
+      if (data.resultCode === 0) dispatch(unfollowUser(userId));
+      dispatch(toggleFollowingProgress(false, userId));
     });
   };
 };
