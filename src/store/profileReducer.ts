@@ -1,6 +1,7 @@
 import type { ProfileType } from "../models/profile";
 import { generateId } from "../utils/helpers";
-import type { RootAction } from "./store";
+import type { RootAction, RootThunk } from "./store";
+import { profileAPI } from "../api/api";
 
 const DUMMY_POSTS = [
   { id: "p1", postText: "Some text 1", likesCount: 2 },
@@ -66,6 +67,7 @@ export const profileReducer = (state: ProfilePage = initState, action: RootActio
   }
 };
 
+// Action Creators
 export const setUserProfile = (profile: ProfileType) => {
   return { type: PROFILE_ACTION_TYPES.SET_PROFILE, profile };
 };
@@ -77,6 +79,11 @@ export const updateNewPostTextAC = (text: string) => {
 export const addNewPostAC = (postText: string) => {
   const newPostId = generateId();
   return { type: PROFILE_ACTION_TYPES.ADD_NEW_POST, newPostId, postText };
+};
+
+// Thunk Creators
+export const getUserProfile = (userId: string): RootThunk => (dispatch) => {
+  profileAPI.getUserProfile(userId).then(data => dispatch(setUserProfile(data)));
 };
 
 export default profileReducer;
