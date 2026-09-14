@@ -1,7 +1,6 @@
-import type { Dispatch } from "redux";
-import { followAPI, usersAPI } from "../api/api";
 import type { User } from "../models/user";
-import type { RootAction } from "./store";
+import type { RootAction, RootThunk } from "./store";
+import { followAPI, usersAPI } from "../api/api";
 
 const USERS_ACTIONS = {
   SET_USERS: "users/SET-USERS",
@@ -119,8 +118,8 @@ export const toggleFollowingProgress = (inProgress: boolean, userId: number) => 
 };
 
 // Thunk Creators
-export const fetchUsers = (currentPage: number, pageSize: number) => {
-  return (dispatch: Dispatch) => {
+export const fetchUsers = (currentPage: number, pageSize: number): RootThunk => {
+  return (dispatch) => {
     dispatch(toggleIsFetching(true));
     usersAPI.getUsers(currentPage, pageSize).then(data => {
       dispatch(toggleIsFetching(false));
@@ -130,8 +129,8 @@ export const fetchUsers = (currentPage: number, pageSize: number) => {
   };
 };
 
-export const follow = (user_ID: number) => {
-  return (dispatch: Dispatch) => {
+export const follow = (user_ID: number): RootThunk => {
+  return (dispatch) => {
     dispatch(toggleFollowingProgress(true, user_ID));
     followAPI.follow(user_ID).then(data => {
       if (data.resultCode === 0) dispatch(followUser(user_ID));
@@ -140,8 +139,8 @@ export const follow = (user_ID: number) => {
   };
 };
 
-export const unfollow = (user_ID: number) => {
-  return (dispatch: Dispatch) => {
+export const unfollow = (user_ID: number): RootThunk => {
+  return (dispatch) => {
     dispatch(toggleFollowingProgress(true, user_ID));
     followAPI.unfollow(user_ID).then(data => {
       if (data.resultCode === 0) dispatch(unfollowUser(user_ID));
