@@ -1,5 +1,5 @@
 import type { Dispatch } from "redux";
-import { usersAPI } from "../api/api";
+import { followAPI, usersAPI } from "../api/api";
 import type { User } from "../models/user";
 import type { RootAction } from "./store";
 
@@ -126,6 +126,26 @@ export const fetchUsers = (currentPage: number, pageSize: number) => {
       dispatch(toggleIsFetching(false));
       dispatch(setUsers(data.items));
       dispatch(setTotalUsersCount(data.totalCount));
+    });
+  };
+};
+
+export const follow = (user_ID: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(toggleFollowingProgress(true, user_ID));
+    followAPI.follow(user_ID).then(data => {
+      if (data.resultCode === 0) dispatch(followUser(user_ID));
+      dispatch(toggleFollowingProgress(false, user_ID));
+    });
+  };
+};
+
+export const unfollow = (user_ID: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(toggleFollowingProgress(true, user_ID));
+    followAPI.unfollow(user_ID).then(data => {
+      if (data.resultCode === 0) dispatch(unfollowUser(user_ID));
+      dispatch(toggleFollowingProgress(false, user_ID));
     });
   };
 };

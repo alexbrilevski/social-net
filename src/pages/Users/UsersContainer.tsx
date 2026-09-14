@@ -1,13 +1,11 @@
 import { Component } from "react";
 import { connect } from "react-redux";
-import { followAPI } from "../../api/api";
 import type { RootState } from "../../store/store";
 import {
   fetchUsers,
-  followUser,
+  follow,
   setCurrentPage,
-  toggleFollowingProgress,
-  unfollowUser,
+  unfollow,
   type UsersPageState
 } from "../../store/usersReducer";
 import Preloader from "../../components/UI/Preloader/Preloader";
@@ -18,9 +16,8 @@ type MapStateToProps = UsersPageState;
 type MapDispatchToProps = {
   fetchUsers: (currentPage: number, pageSize: number) => void,
   setCurrentPage: (pageNumber: number) => void,
-  followUser: (id: number) => void,
-  unfollowUser: (id: number) => void,
-  toggleFollowingProgress: (inProgress: boolean, userId: number) => void,
+  follow: (id: number) => void,
+  unfollow: (id: number) => void,
 };
 
 type UsersContainerProps = MapStateToProps & MapDispatchToProps;
@@ -49,19 +46,11 @@ class UsersContainer extends Component<UsersContainerProps> {
   }
 
   followUser(userId: number) {
-    this.props.toggleFollowingProgress(true, userId);
-    followAPI.follow(userId).then(data => {
-      if (data.resultCode === 0) this.props.followUser(userId);
-      this.props.toggleFollowingProgress(false, userId);
-    });
+    this.props.follow(userId);
   }
 
   unfollowUser(userId: number) {
-    this.props.toggleFollowingProgress(true, userId);
-    followAPI.unfollow(userId).then(data => {
-      if (data.resultCode === 0) this.props.unfollowUser(userId);
-      this.props.toggleFollowingProgress(false, userId);
-    });
+    this.props.unfollow(userId);
   }
 
   render() {
@@ -86,7 +75,6 @@ class UsersContainer extends Component<UsersContainerProps> {
 export default connect(mapStateToProps, {
   fetchUsers,
   setCurrentPage,
-  followUser,
-  unfollowUser,
-  toggleFollowingProgress,
+  follow,
+  unfollow,
 })(UsersContainer);
