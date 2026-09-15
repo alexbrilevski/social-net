@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import type { RootState } from "../../store/store";
 import type { ChatType } from "../../store/messagesReducer";
 import Messages from "./Messages";
+import { withAuthRedirect } from "../../components/hoc/withAuthRedirect";
 
 type MapStateToProps = {
   chats: Array<ChatType>,
@@ -25,4 +26,4 @@ const mapDispatchToProps = (): MapDispatchToProps => {
 
 const MessagesContainer = connect(mapStateToProps, mapDispatchToProps)(Messages);
 
-export default MessagesContainer;
+export default withAuthRedirect(MessagesContainer);
