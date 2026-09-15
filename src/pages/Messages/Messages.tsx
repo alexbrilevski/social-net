@@ -1,11 +1,13 @@
 import type { FC } from "react";
 import type { MessagesProps } from "./MessagesContainer";
 import Chats from "./Chats/Chats";
-
-import styles from "./Messages.module.css";
 import ChatContainer from "./Chat/ChatContainer";
+import { Redirect } from "react-router-dom";
+import styles from "./Messages.module.css";
 
-const Messages: FC<MessagesProps> = ({ chats }) => {
+const Messages: FC<MessagesProps> = ({ chats, isAuth }) => {
+  if (!isAuth) return <Redirect to="/login" />;
+
   return (
     <div className={styles["messages-page-content"]}>
       <Chats chats={chats} />

@@ -5,6 +5,7 @@ import Messages from "./Messages";
 
 type MapStateToProps = {
   chats: Array<ChatType>,
+  isAuth: boolean,
 };
 
 type MapDispatchToProps = {};
@@ -13,6 +14,7 @@ export type MessagesProps = MapStateToProps & MapDispatchToProps;
 
 const mapStateToProps = (state: RootState): MapStateToProps => {
   return {
+    isAuth: state.auth.isAuth,
     chats: state.messagesPage.chats,
   };
 };
