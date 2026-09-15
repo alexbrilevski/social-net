@@ -1,4 +1,5 @@
-import { Component } from "react";
+import { Component, type ComponentType } from "react";
+import { compose } from "redux";
 import { connect } from "react-redux";
 import { withRouter, type RouteComponentProps } from "react-router-dom";
 import type { ProfileType } from "../../models/profile";
@@ -49,6 +50,8 @@ class ProfileContainer extends Component<ProfileContainerProps> {
   }
 };
 
-export default withAuthRedirect(
-  connect(mapStateToProps, { getUserProfile })(withRouter(ProfileContainer))
-);
+export default compose<ComponentType>(
+  connect(mapStateToProps, { getUserProfile }),
+  withRouter,
+  withAuthRedirect,
+)(ProfileContainer);

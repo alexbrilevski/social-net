@@ -1,3 +1,5 @@
+import type { ComponentType } from "react";
+import { compose } from "redux";
 import { connect } from "react-redux";
 import type { RootState } from "../../store/store";
 import type { ChatType } from "../../store/messagesReducer";
@@ -24,6 +26,7 @@ const mapDispatchToProps = (): MapDispatchToProps => {
   return {};
 };
 
-const MessagesContainer = connect(mapStateToProps, mapDispatchToProps)(Messages);
-
-export default withAuthRedirect(MessagesContainer);
+export default compose<ComponentType>(
+  connect(mapStateToProps, mapDispatchToProps),
+  withAuthRedirect,
+)(Messages);
