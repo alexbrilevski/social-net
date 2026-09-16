@@ -3,6 +3,7 @@ import type { ProfileType } from "../../../models/profile";
 import defaultAvatar from "../../../assets/images/man_avatar.png";
 
 import styles from "./ProfileInfo.module.css";
+import { ProfileStatus } from "./ProfileStatus";
 
 type ProfileInfoProps = {
   profile: ProfileType,
@@ -18,6 +19,7 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ profile }) => {
       </div>
       <div>
         <h1>{profile?.fullName}</h1>
+        <ProfileStatus status={"Hello my friends!"}/>
         {profile.lookingForAJob ?
           <>
             <p>Looking for a job: Yes</p>
