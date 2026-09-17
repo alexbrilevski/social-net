@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
   },
 });
 
-type APIResponseData<T> = {
+type APIResponseData<T = {}> = {
   data: T,
   resultCode: number,
   messages: Array<string>,
@@ -54,17 +54,15 @@ export const authAPI = {
   },
 };
 
-type FollowResponseData = {};
-
 export const followAPI = {
   follow(userId: number) {
     return axiosInstance
-      .post<APIResponseData<FollowResponseData>>(`follow/${userId}`, {})
+      .post<APIResponseData>(`follow/${userId}`, {})
       .then(response => response.data);
   },
   unfollow(userId: number) {
     return axiosInstance
-      .delete<APIResponseData<FollowResponseData>>(`follow/${userId}`)
+      .delete<APIResponseData>(`follow/${userId}`)
       .then(response => response.data);
   },
 };
