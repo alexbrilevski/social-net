@@ -3,6 +3,7 @@ import s from "./ProfileStatus.module.css";
 
 type ProfileStatusProps = {
   status: string,
+  updateUserStatus: (status: string) => void,
 };
 
 export class ProfileStatus extends Component<ProfileStatusProps> {
@@ -11,18 +12,20 @@ export class ProfileStatus extends Component<ProfileStatusProps> {
     statusText: "",
   };
 
-  activateEditMode() {
+  activateEditMode = () => {
     this.setState({
       editMode: true,
       statusText: this.props.status,
     });
   };
 
-  deactivateEditMode() {
+  deactivateEditMode = () => {
     this.setState({
       editMode: false,
       statusText: "",
     });
+
+    this.props.updateUserStatus(this.state.statusText);
   };
 
   changeStatusText(e: ChangeEvent<HTMLInputElement>) {
@@ -35,16 +38,16 @@ export class ProfileStatus extends Component<ProfileStatusProps> {
     return (
       <div className={s.status}>
         {!this.state.editMode &&
-          <span className={s["status-text"]} onDoubleClick={this.activateEditMode.bind(this)}>
-            {this.props.status}
+          <span className={s["status-text"]} onDoubleClick={this.activateEditMode}>
+            {this.props.status || "----"}
           </span>
         }
         {this.state.editMode &&
           <input
             className={s["status-input"]}
             value={this.state.statusText}
-            onChange={this.changeStatusText.bind(this)}
-            onBlur={this.deactivateEditMode.bind(this)}
+            onChange={this.changeStatusText}
+            onBlur={this.deactivateEditMode}
             autoFocus
           />
         }

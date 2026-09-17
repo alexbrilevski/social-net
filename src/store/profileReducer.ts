@@ -15,6 +15,7 @@ const PROFILE_ACTION_TYPES = {
   SET_PROFILE: "profile/SET-USER-PROFILE",
   UPDATE_NEW_POST_TEXT: "profile/UPDATE-NEW-POST-TEXT",
   ADD_NEW_POST: "profile/ADD-NEW-POST",
+  SET_USER_STATUS: "profile/SET-USER-STATUS",
 } as const;
 
 export type PostType = {
@@ -27,10 +28,12 @@ export type ProfilePage = {
   profile: ProfileType | null,
   postsData: Array<PostType>,
   newPostText: string,
+  status: string,
 };
 
 export type ProfileAction =
   | ReturnType<typeof setUserProfile>
+  | ReturnType<typeof setUserStatus>
   | ReturnType<typeof updateNewPostTextAC>
   | ReturnType<typeof addNewPostAC>;
 
@@ -38,12 +41,16 @@ const initState = {
   profile: null,
   postsData: DUMMY_POSTS,
   newPostText: "",
+  status: "",
 };
 
 export const profileReducer = (state: ProfilePage = initState, action: RootAction): ProfilePage => {
   switch (action.type) {
     case PROFILE_ACTION_TYPES.SET_PROFILE: {
       return { ...state, profile: action.profile };
+    }
+    case PROFILE_ACTION_TYPES.SET_USER_STATUS: {
+      return { ...state, status: action.status };
     }
     case PROFILE_ACTION_TYPES.UPDATE_NEW_POST_TEXT: {
       return {...state, newPostText: action.text};
@@ -76,6 +83,10 @@ export const updateNewPostTextAC = (text: string) => {
   return { type: PROFILE_ACTION_TYPES.UPDATE_NEW_POST_TEXT, text };
 };
 
+export const setUserStatus = (status: string) => {
+  return { type: PROFILE_ACTION_TYPES.SET_USER_STATUS, status };
+};
+
 export const addNewPostAC = (postText: string) => {
   const newPostId = generateId();
   return { type: PROFILE_ACTION_TYPES.ADD_NEW_POST, newPostId, postText };
@@ -86,4 +97,19 @@ export const getUserProfile = (userId: string): RootThunk => (dispatch) => {
   profileAPI.getUserProfile(userId).then(data => dispatch(setUserProfile(data)));
 };
 
-export default profileReducer;
+export const getUserStatus = (userId: string): RootThunk => {
+  return (dispatch) => {
+    profileAPI.getUserStatus(userId).then(data => dispatch(setUserStatus(data)));
+  };
+};
+
+export const updateUserStatus = (newStatus: string): RootThunk => {
+  return (dispatch) => {
+    profileAPI.updateUserStatus(newStatus)
+      .then(data => {
+        if (data.resultCode === 0) {
+          dispatch(setUserStatus(newStatus));
+        }
+      });
+  };
+};

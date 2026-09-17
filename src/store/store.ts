@@ -1,7 +1,7 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { thunk, type ThunkAction } from "redux-thunk";
 import { authReducer, type AuthAction } from "./authReducer";
-import profileReducer, { type ProfileAction } from "./profileReducer";
+import { profileReducer, type ProfileAction } from "./profileReducer";
 import messagesReducer, { type MessagesAction } from "./messagesReducer";
 import { usersReducer, type UserActions } from "./usersReducer";
 

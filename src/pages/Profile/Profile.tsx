@@ -6,16 +6,22 @@ import Preloader from "../../components/UI/Preloader/Preloader";
 
 type ProfileProps = {
   profile: ProfileType | null,
+  status: string,
+  updateUserStatus: (status: string) => void,
 };
 
-const Profile: FC<ProfileProps> = ({ profile }) => {
+const Profile: FC<ProfileProps> = ({ profile, status, updateUserStatus }) => {
   if (!profile) {
     return <Preloader />
   }
 
   return (
     <div>
-      <ProfileInfo profile={profile} />
+      <ProfileInfo
+        profile={profile}
+        status={status}
+        updateUserStatus={updateUserStatus}
+      />
       <PostListContainer />
     </div>
   );

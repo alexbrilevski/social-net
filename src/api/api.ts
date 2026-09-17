@@ -38,6 +38,16 @@ export const profileAPI = {
       .get<ProfileResponseData>(`profile/${userId}`)
       .then(response => response.data);
   },
+  getUserStatus(userId: string) {
+    return axiosInstance
+      .get<string>(`profile/status/${userId}`)
+      .then(response => response.data);
+  },
+  updateUserStatus(status: string) {
+    return axiosInstance
+      .put<APIResponseData>("profile/status", { status })
+      .then(response => response.data);
+  },
 };
 
 type AuthResponseData = {

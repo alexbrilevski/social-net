@@ -7,9 +7,11 @@ import { ProfileStatus } from "./ProfileStatus";
 
 type ProfileInfoProps = {
   profile: ProfileType,
+  status: string,
+  updateUserStatus: (status: string) => void,
 };
 
-const ProfileInfo: FC<ProfileInfoProps> = ({ profile }) => {
+const ProfileInfo: FC<ProfileInfoProps> = ({ profile, status, updateUserStatus }) => {
   const avatarSrc = profile.photos.large ?? defaultAvatar;
 
   return (
@@ -19,7 +21,10 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ profile }) => {
       </div>
       <div>
         <h1>{profile?.fullName}</h1>
-        <ProfileStatus status={"Hello my friends!"}/>
+        <ProfileStatus
+          status={status}
+          updateUserStatus={updateUserStatus}
+        />
         {profile.lookingForAJob ?
           <>
             <p>Looking for a job: Yes</p>
