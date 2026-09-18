@@ -1,5 +1,6 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { thunk, type ThunkAction } from "redux-thunk";
+import {reducer as formReducer} from "redux-form";
 import { authReducer, type AuthAction } from "./authReducer";
 import { profileReducer, type ProfileAction } from "./profileReducer";
 import messagesReducer, { type MessagesAction } from "./messagesReducer";
@@ -21,6 +22,7 @@ export type RootThunk<ReturnType = void> = ThunkAction<
 >;
 
 const rootReducer = combineReducers({
+  form: formReducer,
   auth: authReducer,
   profilePage: profileReducer,
   messagesPage: messagesReducer,

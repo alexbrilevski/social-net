@@ -1,45 +1,67 @@
 import type { FC } from "react";
-
+import { type InjectedFormProps, Field, reduxForm } from "redux-form";
+import type { LoginData } from "../../api/api";
 import styles from "./SignIn.module.css";
 
-const SignIn: FC = () => {
-  return (
-    <div>
-      <h1 className={styles["page-title"]}>Sign in to DevsNet</h1>
+type SignInProps = {
+  sendLoginData: (loginFormData: LoginData) => void,
+};
 
-      <form className={styles["signin-form"]}>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            className="form-control"
-            type="email"
-            name="email"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            className="form-control"
-            type="password"
-            name="password"
-          />
-        </div>
-        <div className="form-group form-group-checkbox">
-          <input
-            id="remember-me"
-            type="checkbox"
-            name="remember-me"
-          />
-          <label htmlFor="remember-me">Remember me</label>
-        </div>
-        <div className="form-actions">
-          <button>Sign in</button>
-        </div>
-      </form>
-    </div>
+const SignInForm: FC<InjectedFormProps<LoginData>> = (props) => {
+  return (
+    <form onSubmit={props.handleSubmit} className={styles["signin-form"]}>
+      <div className="form-group">
+        <label htmlFor="email">Email</label>
+        <Field
+          component={"input"}
+          id={"email"}
+          className={"form-control"}
+          name={"email"}
+          type={"email"}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="password">Password</label>
+        <Field
+          component={"input"}
+          id={"password"}
+          className={"form-control"}
+          name={"password"}
+          type={"password"}
+        />
+      </div>
+      <div className="form-group form-group-checkbox">
+        <Field
+          component={"input"}
+          id={"remember-me"}
+          name={"rememberMe"}
+          type={"checkbox"}
+        />
+        <label htmlFor="remember-me">Remember me</label>
+      </div>
+      <div className="form-actions">
+        <button>Sign in</button>
+      </div>
+    </form>
   );
 };
 
-export default SignIn;
+const LoginFormContainer = reduxForm<LoginData>({ form: "signinForm" })(SignInForm);
+
+export const SignIn: FC<SignInProps> = (props) => {
+  const onLoginFormSubmit = (formData: LoginData) => {
+    const loginData = {
+      email: formData.email,
+      password: formData.password,
+      rememberMe: formData.rememberMe
+    };
+    props.sendLoginData(loginData);
+  };
+
+  return (
+    <div>
+      <h1 className={styles["page-title"]}>Sign in to DevsNet</h1>
+      <LoginFormContainer onSubmit={onLoginFormSubmit} />
+    </div>
+  );
+};

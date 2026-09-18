@@ -1,6 +1,6 @@
 import type { ProfileType } from "../models/profile";
 import type { RootAction, RootThunk } from "./store";
-import { authAPI, profileAPI } from "../api/api";
+import { authAPI, profileAPI, type LoginData } from "../api/api";
 
 const AUTH_ACTIONS = {
   SET_AUTH_USER_DATA: "auth/SET_AUTH_USER_DATA",
@@ -54,6 +54,7 @@ export const setAuthUserData = (
   };
 };
 
+// Action Creators
 export const setAuthUserProfile = (profile: ProfileType) => {
   return {
     type: AUTH_ACTIONS.SET_AUTH_USER_PROFILE,
@@ -73,4 +74,17 @@ export const getAuthUserData = (): RootThunk => (dispatch) => {
       }
     })
     .then((data) => data && dispatch(setAuthUserProfile(data)));
+};
+
+export const sendLoginData = (loginFormData: LoginData): RootThunk => {
+  return (dispatch) => {
+    authAPI
+      .login(loginFormData)
+      .then((data) => {
+        if (data.resultCode === 0) {
+          return profileAPI.getUserProfile(data.data.userId.toString());
+        }
+      })
+      .then((data) => data && dispatch(setAuthUserProfile(data)));
+  };
 };
