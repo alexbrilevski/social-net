@@ -4,7 +4,7 @@ import type { LoginData } from "../../api/api";
 import styles from "./SignIn.module.css";
 
 type SignInProps = {
-  sendLoginData: (loginFormData: LoginData) => void,
+  sendLoginData: (signInFormData: LoginData) => void,
 };
 
 const SignInForm: FC<InjectedFormProps<LoginData>> = (props) => {
@@ -46,10 +46,10 @@ const SignInForm: FC<InjectedFormProps<LoginData>> = (props) => {
   );
 };
 
-const LoginFormContainer = reduxForm<LoginData>({ form: "signinForm" })(SignInForm);
+const SignInFormContainer = reduxForm<LoginData>({ form: "signInForm" })(SignInForm);
 
 export const SignIn: FC<SignInProps> = (props) => {
-  const onLoginFormSubmit = (formData: LoginData) => {
+  const onSignInFormSubmit = (formData: LoginData) => {
     const loginData = {
       email: formData.email,
       password: formData.password,
@@ -61,7 +61,7 @@ export const SignIn: FC<SignInProps> = (props) => {
   return (
     <div>
       <h1 className={styles["page-title"]}>Sign in to DevsNet</h1>
-      <LoginFormContainer onSubmit={onLoginFormSubmit} />
+      <SignInFormContainer onSubmit={onSignInFormSubmit} />
     </div>
   );
 };

@@ -6,13 +6,11 @@ import {SignIn} from "./SignIn";
 
 type MapStateToPropsType = {};
 type MapDispatchToProps = {
-  sendLoginData: (loginFormData: LoginData) => void
+  sendLoginData: (signInFormData: LoginData) => void
 };
-type LoginContainerProps = MapStateToPropsType & MapDispatchToProps;
+type SignInContainerProps = MapStateToPropsType & MapDispatchToProps;
 
-const mapStateToProps = () => ({});
-
-class LoginContainer extends Component<LoginContainerProps> {
+class SignInContainer extends Component<SignInContainerProps> {
   render() {
     return (
       <SignIn {...this.props} />
@@ -20,4 +18,4 @@ class LoginContainer extends Component<LoginContainerProps> {
   };
 }
 
-export default connect(mapStateToProps, { sendLoginData })(LoginContainer)
+export default connect(() => ({}), { sendLoginData })(SignInContainer)
