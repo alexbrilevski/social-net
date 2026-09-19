@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import type { Dispatch } from "redux";
 import type { RootAction, RootState } from "../../../store/store";
-import { sendNewMessageToChatAC, updateNewMessageTextAC, type Messages } from "../../../store/messagesReducer";
+import { sendNewMessageToChatAC, type Messages } from "../../../store/messagesReducer";
 import Chat from "./Chat";
 
 type MapStateToProps = {
@@ -10,7 +10,6 @@ type MapStateToProps = {
 };
 
 type MapDispatchToProps = {
-  updateNewMessageText: (chatId: string, text: string) => void,
   sendMessage: (chatId: string, authUserId: string, newMessageText: string) => void,
 };
 
@@ -24,9 +23,6 @@ const mapStateToProps = (state: RootState): MapStateToProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>): MapDispatchToProps => {
   return {
-    updateNewMessageText: (chatId: string, text: string) => {
-      dispatch(updateNewMessageTextAC(chatId, text));
-    },
     sendMessage: (chatId: string, authUserId: string, newMessageText: string) => {
       dispatch(sendNewMessageToChatAC(chatId, authUserId, newMessageText));
     },

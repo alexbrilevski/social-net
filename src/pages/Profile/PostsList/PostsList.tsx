@@ -1,49 +1,23 @@
-import type { FC, ChangeEvent, SubmitEvent } from "react";
+import type { FC } from "react";
 import type { PostsListProps } from "./PostListContainer";
 import Post from "./Post/Post";
 
 import styles from "./PostsList.module.css";
+import NewPostForm, { type NewPostFormData } from "./NewPostForm/NewPostForm";
 
 const PostsList: FC<PostsListProps> = ({
   postsData,
-  newPostText,
   addPost,
-  updateNewPostText
 }) => {
-  const onNewPostTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    updateNewPostText(value);
-  };
-
-  const onAddNewPostSubmit = (e: SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (newPostText.trim() !== "") {
-      addPost(newPostText);
-    }
+  const handleAddPost = (formData: NewPostFormData) => {
+    addPost(formData.newPostText);
   };
 
   return (
     <div className={styles["user-posts"]}>
       <h2>My Posts</h2>
       <div className={styles["new-post-section"]}>
-        <form className={styles["new-post-form"]} onSubmit={onAddNewPostSubmit}>
-          <div className="form-group">
-            <label htmlFor="new-post-text">New post</label>
-            <textarea
-              id="new-post-text"
-              className="form-control"
-              name="new-post-text"
-              value={newPostText}
-              placeholder="Type your post here"
-              onChange={onNewPostTextChange}
-            >
-            </textarea>
-          </div>
-          <div className="form-actions">
-            <button>Add new post</button>
-          </div>
-        </form>
+        <NewPostForm onSubmit={handleAddPost} />
       </div>
       <div>
         <ul className={styles["posts-list"]}>

@@ -3,7 +3,7 @@ import { thunk, type ThunkAction } from "redux-thunk";
 import {reducer as formReducer} from "redux-form";
 import { authReducer, type AuthAction } from "./authReducer";
 import { profileReducer, type ProfileAction } from "./profileReducer";
-import messagesReducer, { type MessagesAction } from "./messagesReducer";
+import { messagesReducer, type MessagesAction } from "./messagesReducer";
 import { usersReducer, type UserActions } from "./usersReducer";
 
 export type RootStore = typeof store;

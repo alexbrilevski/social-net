@@ -14,24 +14,20 @@ const DUMMY_MESSAGES = {
       { id: "m2", userId: "u0", text: "Hello!" },
       { id: "m3", userId: "u1", text: "How's things?" },
     ],
-    newMessageText: "",
   },
   "c2": {
     messages: [
       { id: "m1", userId: "u0", text: "Yo!" },
     ],
-    newMessageText: "",
   },
   "c3": {
     messages: [
       { id: "m1", userId: "u3", text: "What's up?" },
     ],
-    newMessageText: "",
   },
 };
 
 const MESSAGES_ACTION_TYPES = {
-  UPDATE_NEW_MESSAGE_TEXT: "messages/UPDATE-NEW-MESSAGE-TEXT",
   SEND_NEW_MESSAGE_TO_CHAT: "messages/SEND-NEW-MESSAGE-TO-CHAT",
 } as const;
 
@@ -50,7 +46,6 @@ export type MessageType = {
 export type Messages = {
   [chatId: string]: {
     messages: Array<MessageType>,
-    newMessageText: string,
   },
 };
 
@@ -60,8 +55,7 @@ export type MessagesPage = {
 };
 
 export type MessagesAction =
-  ReturnType<typeof updateNewMessageTextAC> |
-  ReturnType<typeof sendNewMessageToChatAC>;
+  | ReturnType<typeof sendNewMessageToChatAC>;
 
 const initState = {
   chats: DUMMY_CHATS,
@@ -70,18 +64,6 @@ const initState = {
 
 export const messagesReducer = (state: MessagesPage = initState, action: RootAction): MessagesPage => {
   switch (action.type) {
-    case MESSAGES_ACTION_TYPES.UPDATE_NEW_MESSAGE_TEXT: {
-      return {
-        ...state, 
-        messages: {
-          ...state.messages, 
-          [action.chatId]: {
-            ...state.messages[action.chatId],
-            newMessageText: action.text,
-          }
-        }
-      };
-    }
     case MESSAGES_ACTION_TYPES.SEND_NEW_MESSAGE_TO_CHAT: {
       const newMessage: MessageType = {
         id: action.newMessageId,
@@ -95,7 +77,6 @@ export const messagesReducer = (state: MessagesPage = initState, action: RootAct
           ...state.messages,
           [action.chatId]: {
             messages: [...state.messages[action.chatId].messages, newMessage],
-            newMessageText: action.text,
           }
         }
       };
@@ -106,13 +87,7 @@ export const messagesReducer = (state: MessagesPage = initState, action: RootAct
   }
 };
 
-export const updateNewMessageTextAC = (chatId: string, text: string) => {
-  return { type: MESSAGES_ACTION_TYPES.UPDATE_NEW_MESSAGE_TEXT, chatId, text };
-};
-
 export const sendNewMessageToChatAC = (chatId: string, userId: string, text: string) => {
   const newMessageId = generateId();
   return { type: MESSAGES_ACTION_TYPES.SEND_NEW_MESSAGE_TO_CHAT, newMessageId, chatId, userId, text };
 };
-
-export default messagesReducer;

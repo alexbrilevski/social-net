@@ -2,7 +2,6 @@ import {
   messagesReducer,
   type MessagesPage,
   sendNewMessageToChatAC,
-  updateNewMessageTextAC,
 } from "./messagesReducer";
 
 let state: MessagesPage;
@@ -20,25 +19,12 @@ beforeEach(() => {
           { id: "m2", userId: "u0", text: "Hello!" },
           { id: "m3", userId: "u1", text: "How's things?" },
         ],
-        newMessageText: "",
       },
       "c2": {
         messages: [{ id: "m1", userId: "u0", text: "Yo!" }],
-        newMessageText: "",
       },
     },
   };
-});
-
-test("New message text should be immutably updated", () => {
-  const chatId = "c2";
-  const newText = "Hello world!";
-  const action = updateNewMessageTextAC(chatId, newText);
-
-  const newState = messagesReducer(state, action);
-
-  expect(newState).not.toBe(state);
-  expect(newState.messages[chatId].newMessageText).toBe(newText);
 });
 
 test("New message should be immutably added", () => {
@@ -52,5 +38,4 @@ test("New message should be immutably added", () => {
   expect(newState).not.toBe(state);
   expect(newState.messages[chatId].messages.length).toBe(4);
   expect(newState.messages[chatId].messages[3].id).toBe(action.newMessageId);
-  expect(newState.messages[chatId].newMessageText).toBe(newMessageText);
 });

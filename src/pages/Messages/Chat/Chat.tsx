@@ -1,23 +1,18 @@
-import type { ChangeEvent, FC, SubmitEvent } from "react";
+import type { FC } from "react";
 import type { ChatProps } from "./ChatContainer";
 import Message from "./Message/Message";
-
+import type { NewMessageFormData } from "./NewMessageForm/NewMessageForm";
 import styles from "./Chat.module.css";
+import NewMessageForm from "./NewMessageForm/NewMessageForm";
 
 const Chat: FC<ChatProps> = (props) => {
   const chatId = "c1";
   const authUserId = "u0";
   const messagesData = props.messagesData[chatId];
   const messages = messagesData.messages;
-  const newMessageText = messagesData.newMessageText;
 
-  const onNewMessageTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    props.updateNewMessageText(chatId, e.target.value);
-  };
-
-  const onSendMessageFormSubmit = (e: SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    props.sendMessage(chatId, authUserId, newMessageText);
+  const handleSendMessage = (formData: NewMessageFormData) => {
+    props.sendMessage(chatId, authUserId, formData.newMessageText);
   };
 
   return (
@@ -31,23 +26,7 @@ const Chat: FC<ChatProps> = (props) => {
           />
         ))}
       </div>
-      <form className={styles["new-message-form"]} onSubmit={onSendMessageFormSubmit}>
-        <div className="form-group">
-          <label htmlFor="new-message-text">New message</label>
-          <textarea
-            id="new-message-text"
-            className="form-control"
-            name="new-message-text"
-            value={newMessageText}
-            placeholder="Type your message here"
-            onChange={onNewMessageTextChange}
-          >
-          </textarea>
-        </div>
-        <div className="form-actions">
-          <button>Send</button>
-        </div>
-      </form>
+      <NewMessageForm onSubmit={handleSendMessage} />
     </div>
   );
 };

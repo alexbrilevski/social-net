@@ -13,7 +13,6 @@ const DUMMY_POSTS = [
 
 const PROFILE_ACTION_TYPES = {
   SET_PROFILE: "profile/SET-USER-PROFILE",
-  UPDATE_NEW_POST_TEXT: "profile/UPDATE-NEW-POST-TEXT",
   ADD_NEW_POST: "profile/ADD-NEW-POST",
   SET_USER_STATUS: "profile/SET-USER-STATUS",
 } as const;
@@ -27,20 +26,17 @@ export type PostType = {
 export type ProfilePage = {
   profile: ProfileType | null,
   postsData: Array<PostType>,
-  newPostText: string,
   status: string,
 };
 
 export type ProfileAction =
   | ReturnType<typeof setUserProfile>
   | ReturnType<typeof setUserStatus>
-  | ReturnType<typeof updateNewPostTextAC>
   | ReturnType<typeof addNewPostAC>;
 
 const initState = {
   profile: null,
   postsData: DUMMY_POSTS,
-  newPostText: "",
   status: "",
 };
 
@@ -52,9 +48,6 @@ export const profileReducer = (state: ProfilePage = initState, action: RootActio
     case PROFILE_ACTION_TYPES.SET_USER_STATUS: {
       return { ...state, status: action.status };
     }
-    case PROFILE_ACTION_TYPES.UPDATE_NEW_POST_TEXT: {
-      return {...state, newPostText: action.text};
-    }
     case PROFILE_ACTION_TYPES.ADD_NEW_POST: {
       const newPost: PostType = {
         id: action.newPostId,
@@ -65,7 +58,6 @@ export const profileReducer = (state: ProfilePage = initState, action: RootActio
       return {
         ...state, 
         postsData: [newPost, ...state.postsData],
-        newPostText: "",
       };
     }
     default: {
@@ -77,10 +69,6 @@ export const profileReducer = (state: ProfilePage = initState, action: RootActio
 // Action Creators
 export const setUserProfile = (profile: ProfileType) => {
   return { type: PROFILE_ACTION_TYPES.SET_PROFILE, profile };
-};
-
-export const updateNewPostTextAC = (text: string) => {
-  return { type: PROFILE_ACTION_TYPES.UPDATE_NEW_POST_TEXT, text };
 };
 
 export const setUserStatus = (status: string) => {
