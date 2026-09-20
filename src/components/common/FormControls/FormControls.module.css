@@ -1,0 +1,23 @@
+.form-control {
+  margin-bottom: var(--indent-s);
+}
+
+.form-control input,
+.form-control textarea {
+  display: block;
+  width: 100%;
+  padding: var(--indent-xs) var(--indent-s);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-default);
+}
+
+.form-control.error input,
+.form-control.error textarea {
+  border: 1px solid red;
+}
+
+.form-control .error-message {
+  display: inline-block;
+  margin-top: var(--indent-xs);
+  color: red;
+}

@@ -1,6 +1,8 @@
 import { type FC } from "react";
 import { type InjectedFormProps, Field, reduxForm } from "redux-form";
 import styles from "./../PostsList.module.css";
+import { Textarea } from "../../../../components/common/FormControls/FormControls";
+import { required, setMinLength } from "../../../../utils/validators";
 
 export type NewPostFormData = {
   newPostText: string,
@@ -12,11 +14,11 @@ const NewPostForm: FC<InjectedFormProps<NewPostFormData>> = (props) => {
       <div className="form-group">
         <label htmlFor="new-post-text">New post</label>
         <Field
-          component={"textarea"}
+          component={Textarea}
           id={"new-post-text"}
-          className={"form-control"}
           name={"newPostText"}
           placeholder={"Type your post here"}
+          validate={[required, setMinLength(10)]}
         />
       </div>
       <div className="form-actions">

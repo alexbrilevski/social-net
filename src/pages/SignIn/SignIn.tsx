@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { type InjectedFormProps, Field, reduxForm } from "redux-form";
 import type { LoginData } from "../../api/api";
+import { Input } from "../../components/common/FormControls/FormControls";
 import styles from "./SignIn.module.css";
 
 type SignInProps = {
@@ -13,9 +14,8 @@ const SignInForm: FC<InjectedFormProps<LoginData>> = (props) => {
       <div className="form-group">
         <label htmlFor="email">Email</label>
         <Field
-          component={"input"}
+          component={Input}
           id={"email"}
-          className={"form-control"}
           name={"email"}
           type={"email"}
         />
@@ -23,9 +23,8 @@ const SignInForm: FC<InjectedFormProps<LoginData>> = (props) => {
       <div className="form-group">
         <label htmlFor="password">Password</label>
         <Field
-          component={"input"}
+          component={Input}
           id={"password"}
-          className={"form-control"}
           name={"password"}
           type={"password"}
         />

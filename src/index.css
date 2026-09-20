@@ -144,14 +144,6 @@ button {
   min-height: 80px;
 }
 
-.form-group .form-control {
-  display: block;
-  width: 100%;
-  padding: var(--indent-xs) var(--indent-s);
-  border: 1px solid var(--border);
-  border-radius: var(--border-radius-default);
-}
-
 .form-group-checkbox {
   display: flex;
   align-items: center;
