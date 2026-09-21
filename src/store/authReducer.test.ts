@@ -1,9 +1,7 @@
-import type { ProfileType } from "../models/profile";
 import {
   type AuthInitState,
   authReducer,
   setAuthUserData,
-  setAuthUserProfile,
 } from "./authReducer";
 
 let initState: AuthInitState;
@@ -14,7 +12,6 @@ beforeEach(() => {
     email: "",
     login: "",
     isAuth: false,
-    profile: {} as ProfileType,
   };
 });
 
@@ -26,10 +23,10 @@ test("Authorised user data should be set to state", () => {
     isAuth: true,
     profile: {},
   };
-  const { userId, email, login } = userData;
+  const { userId, email, login, isAuth } = userData;
   const newState = authReducer(
     initState,
-    setAuthUserData(userId, email, login),
+    setAuthUserData(userId, email, login, isAuth),
   );
 
   expect(newState).not.toBe(initState);
@@ -38,24 +35,4 @@ test("Authorised user data should be set to state", () => {
   expect(newState.login).toBe(login);
   expect(newState.isAuth).toBeTruthy();
   expect(initState.isAuth).toBeFalsy();
-});
-
-test("Authorised user profile should be set to state", () => {
-  const userProfile: ProfileType = {
-    userId: 2,
-    lookingForAJob: true,
-    lookingForAJobDescription: "",
-    fullName: "User",
-    contacts: {
-      github: "",
-    },
-    photos: {
-      small: "",
-      large: "",
-    },
-  };
-  const newState = authReducer(initState, setAuthUserProfile(userProfile));
-
-  expect(newState).not.toBe(initState);
-  expect(newState.profile).toEqual(userProfile);
 });

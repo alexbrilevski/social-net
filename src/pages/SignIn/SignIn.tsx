@@ -1,14 +1,30 @@
 import type { FC } from "react";
+import { connect } from "react-redux";
 import { type InjectedFormProps, Field, reduxForm } from "redux-form";
-import type { LoginData } from "../../api/api";
+import { Redirect } from "react-router-dom";
+import type { RootState } from "../../store/store";
+import { login } from "../../store/authReducer";
+import { required } from "../../utils/validators";
 import { Input } from "../../components/common/FormControls/FormControls";
 import styles from "./SignIn.module.css";
 
-type SignInProps = {
-  sendLoginData: (signInFormData: LoginData) => void,
+type SignInFormData = {
+  email: string,
+  password: string,
+  rememberMe: boolean,
 };
 
-const SignInForm: FC<InjectedFormProps<LoginData>> = (props) => {
+type MapStateToProps = {
+  isAuth: boolean,
+};
+
+type MapDispatchToProps = {
+  login: (email: string, password: string, rememberMe: boolean) => void
+};
+
+type SignInProps = MapStateToProps & MapDispatchToProps;
+
+const SignInForm: FC<InjectedFormProps<SignInFormData>> = (props) => {
   return (
     <form onSubmit={props.handleSubmit} className={styles["signin-form"]}>
       <div className="form-group">
@@ -18,6 +34,7 @@ const SignInForm: FC<InjectedFormProps<LoginData>> = (props) => {
           id={"email"}
           name={"email"}
           type={"email"}
+          validate={[required]}
         />
       </div>
       <div className="form-group">
@@ -27,6 +44,7 @@ const SignInForm: FC<InjectedFormProps<LoginData>> = (props) => {
           id={"password"}
           name={"password"}
           type={"password"}
+          validate={[required]}
         />
       </div>
       <div className="form-group form-group-checkbox">
@@ -45,17 +63,16 @@ const SignInForm: FC<InjectedFormProps<LoginData>> = (props) => {
   );
 };
 
-const SignInFormContainer = reduxForm<LoginData>({ form: "signInForm" })(SignInForm);
+const SignInFormContainer = reduxForm<SignInFormData>({ form: "signInForm" })(SignInForm);
 
-export const SignIn: FC<SignInProps> = (props) => {
-  const onSignInFormSubmit = (formData: LoginData) => {
-    const loginData = {
-      email: formData.email,
-      password: formData.password,
-      rememberMe: formData.rememberMe
-    };
-    props.sendLoginData(loginData);
+const SignIn: FC<SignInProps> = (props) => {
+  const onSignInFormSubmit = (formData: SignInFormData) => {
+    props.login(formData.email, formData.password, formData.rememberMe);
   };
+
+  if (props.isAuth) {
+    return <Redirect to={"/profile"} />;
+  }
 
   return (
     <div>
@@ -64,3 +81,9 @@ export const SignIn: FC<SignInProps> = (props) => {
     </div>
   );
 };
+
+const mapStateToProps = (state: RootState) => ({
+  isAuth: state.auth.isAuth,
+});
+
+export default connect(mapStateToProps, { login })(SignIn);

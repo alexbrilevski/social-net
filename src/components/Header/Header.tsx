@@ -8,10 +8,11 @@ import styles from "./Header.module.css";
 type HeaderProps = {
   login: string,
   isAuth: boolean,
-  profile: ProfileType
+  profile: ProfileType,
+  logout: () => void,
 };
 
-const Header: FC<HeaderProps> = ({ isAuth, profile, login }) => {
+const Header: FC<HeaderProps> = ({ isAuth, profile, login, logout }) => {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
@@ -33,7 +34,10 @@ const Header: FC<HeaderProps> = ({ isAuth, profile, login }) => {
               </Link>
               <div className={styles.userInfo}>
                 <p>{profile.fullName}</p>
-                <p>{login}</p>
+                <p>
+                  {login}
+                  <button onClick={logout}>Logout</button>
+                </p>
               </div>
             </div>
           :

@@ -24,7 +24,7 @@ export type PostType = {
 };
 
 export type ProfilePage = {
-  profile: ProfileType | null,
+  profile: ProfileType,
   postsData: Array<PostType>,
   status: string,
 };
@@ -35,7 +35,7 @@ export type ProfileAction =
   | ReturnType<typeof addNewPostAC>;
 
 const initState = {
-  profile: null,
+  profile: {} as ProfileType,
   postsData: DUMMY_POSTS,
   status: "",
 };

@@ -22,12 +22,6 @@ type UsersResponseData = {
   error: string,
 };
 
-export type LoginData = {
-  email: string, 
-  password: string, 
-  rememberMe: boolean,
-};
-
 export const usersAPI = {
   getUsers(currentPage: number = 1, pageSize: number = 10) {
     return axiosInstance
@@ -68,9 +62,17 @@ export const authAPI = {
       .get<APIResponseData<AuthResponseData>>("auth/me")
       .then(response => response.data);
   },
-  login(loginData: LoginData) {
+  login(email: string, password: string, rememberMe: boolean = false) {
     return axiosInstance
-      .post<APIResponseData<{userId: number}>>("auth/login", loginData)
+      .post<APIResponseData<{userId: number}>>(
+        "auth/login", 
+        { email, password, rememberMe }
+      )
+      .then(response => response.data);
+  },
+  logout() {
+    return axiosInstance
+      .delete<APIResponseData>("auth/login")
       .then(response => response.data);
   },
 };

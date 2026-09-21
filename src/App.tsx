@@ -1,7 +1,7 @@
 import { Route } from "react-router-dom";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Sidebar from "./components/Sidebar/Sidebar";
-import SignInContainer from "./pages/SignIn/SignInContainer";
+import SignInContainer from "./pages/SignIn/SignIn";
 import ProfileContainer from "./pages/Profile/ProfileContainer";
 import MessagesContainer from "./pages/Messages/MessagesContainer";
 import UsersContainer from "./pages/Users/UsersContainer";
