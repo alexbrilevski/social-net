@@ -27,6 +27,7 @@ type SignInProps = MapStateToProps & MapDispatchToProps;
 const SignInForm: FC<InjectedFormProps<SignInFormData>> = (props) => {
   return (
     <form onSubmit={props.handleSubmit} className={styles["signin-form"]}>
+      {props.error && <div className={styles["form-error"]}>{props.error}</div>}
       <div className="form-group">
         <label htmlFor="email">Email</label>
         <Field

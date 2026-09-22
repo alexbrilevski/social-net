@@ -8,3 +8,12 @@
   margin: var(--indent-base) auto;
   padding: var(--indent-s) var(--indent-base);
 }
+
+.form-error {
+  margin-bottom: var(--indent-s);
+  padding: var(--indent-xs) var(--indent-s);
+  background: #fef4f1;
+  color: red;
+  border: 1px solid red;
+  border-radius: var(--border-radius-default);
+}

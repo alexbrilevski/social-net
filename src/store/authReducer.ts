@@ -1,3 +1,4 @@
+import { stopSubmit } from "redux-form";
 import type { RootAction, RootThunk } from "./store";
 import { authAPI, profileAPI } from "../api/api";
 import { setUserProfile } from "./profileReducer";
@@ -71,6 +72,9 @@ export const login = (
       .then((data) => {
         if (data.resultCode === 0) {
           dispatch(getAuthUserData());
+        } else {
+          const message = data.messages.length > 0 ? data.messages[0] : "Some error";
+          dispatch(stopSubmit("signInForm", {_error: message}));
         }
       });
   };
