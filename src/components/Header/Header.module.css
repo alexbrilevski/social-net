@@ -31,6 +31,5 @@
 }
 
 .login-block button {
-  margin-left: var(--indent-s);
   padding: 0 var(--indent-xs);
 }

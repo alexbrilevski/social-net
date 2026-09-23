@@ -1,21 +1,24 @@
 import { stopSubmit } from "redux-form";
 import type { RootThunk } from "./store";
 import { authAPI, profileAPI } from "../api/api";
-import { setUserProfile } from "./profileReducer";
 
 const AUTH_ACTIONS = {
   SET_AUTH_USER_DATA: "auth/SET_AUTH_USER_DATA",
+  SET_AUTH_USER_PROFILE_DATA: "auth/SET_AUTH_USER_PROFILE_DATA",
 } as const;
 
 export type AuthInitState = typeof initState;
 
 export type AuthAction =
-  | ReturnType<typeof setAuthUserData>;
+  | ReturnType<typeof setAuthUserData>
+  | ReturnType<typeof setAuthUserProfileData>;
 
 const initState = {
   userId: null as number | null,
   email: null as string | null,
   login: null as string | null,
+  fullName: null as string | null,
+  photo: null as string | null,
   isAuth: false,
 };
 
@@ -25,6 +28,7 @@ export const authReducer = (
 ): AuthInitState => {
   switch (action.type) {
     case AUTH_ACTIONS.SET_AUTH_USER_DATA:
+    case AUTH_ACTIONS.SET_AUTH_USER_PROFILE_DATA:
       return {
         ...state,
         ...action.payload,
@@ -47,6 +51,13 @@ export const setAuthUserData = (
   };
 };
 
+export const setAuthUserProfileData = (fullName: string, photo: string) => {
+  return {
+    type: AUTH_ACTIONS.SET_AUTH_USER_PROFILE_DATA, 
+    payload: { fullName, photo },
+  };
+};
+
 // Thunk Creators
 export const getAuthUserData = (): RootThunk => (dispatch) => {
   authAPI
@@ -58,7 +69,7 @@ export const getAuthUserData = (): RootThunk => (dispatch) => {
         return profileAPI.getUserProfile(id);
       }
     })
-    .then((data) => data && dispatch(setUserProfile(data)));
+    .then((data) => data && dispatch(setAuthUserProfileData(data.fullName, data.photos.small)));
 };
 
 export const login = (

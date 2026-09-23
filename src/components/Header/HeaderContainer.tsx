@@ -2,13 +2,13 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import type { RootState } from "../../store/store";
 import { getAuthUserData, logout } from "../../store/authReducer";
-import type { ProfileType } from "../../models/profile";
 import Header from "./Header";
 
 type MapStateToProps = {
-  login: string | null,
+  userId: number | null,
+  fullName: string | null,
+  photo: string | null,
   isAuth: boolean,
-  profile: ProfileType | null,
 };
 
 type MapDispatchProps = {
@@ -19,9 +19,10 @@ type MapDispatchProps = {
 type HeaderContainerProps = MapStateToProps & MapDispatchProps;
 
 const mapStateToProps = (state: RootState): MapStateToProps => ({
-  login: state.auth.login,
+  userId: state.auth.userId,
+  fullName: state.auth.fullName,
+  photo: state.auth.photo,
   isAuth: state.auth.isAuth,
-  profile: state.profilePage.profile,
 });
 
 class HeaderContainer extends Component<HeaderContainerProps> {

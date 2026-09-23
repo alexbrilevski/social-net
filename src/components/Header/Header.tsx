@@ -1,18 +1,18 @@
 import type { FC } from "react";
 import { Link } from "react-router-dom";
-import type { ProfileType } from "../../models/profile";
 import logo from "../../assets/images/logo.png";
 import defaultAvatar from "../../assets/images/man_avatar.png";
 import styles from "./Header.module.css";
 
 type HeaderProps = {
-  login: string | null,
+  userId: number | null,
+  fullName: string | null,
+  photo: string | null,
   isAuth: boolean,
-  profile: ProfileType | null,
   logout: () => void,
 };
 
-const Header: FC<HeaderProps> = ({ isAuth, profile, login, logout }) => {
+const Header: FC<HeaderProps> = ({ userId, fullName, photo, isAuth, logout }) => {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
@@ -21,23 +21,20 @@ const Header: FC<HeaderProps> = ({ isAuth, profile, login, logout }) => {
         </Link>
       </div>
       <div className={styles["login-block"]}>
-        {isAuth && profile ?
-          !profile.userId ?
+        {isAuth ?
+          !fullName ?
             <span>Loading...</span>
             :
             <div className={styles["container"]}>
-              <Link to={"/profile/" + profile.userId}>
+              <Link to={"/profile/" + userId}>
                 <img
-                  src={profile.photos.small ? profile.photos.small : defaultAvatar}
-                  alt={profile.fullName}
+                  src={photo ?? defaultAvatar}
+                  alt={fullName}
                 />
               </Link>
               <div className={styles.userInfo}>
-                <p>{profile.fullName}</p>
-                <p>
-                  {login}
-                  <button onClick={logout}>Logout</button>
-                </p>
+                <p>{fullName}</p>
+                <button onClick={logout}>Logout</button>
               </div>
             </div>
           :

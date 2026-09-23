@@ -15,11 +15,13 @@ type PathParams = {
 type MapStateToProps = {
   profile: ProfileType | null,
   status: string,
+  authUserId: number | null,
+  isAuth: boolean,
 };
 
 type MapDispatchToProps = {
-  getUserProfile: (userId: string) => void,
-  getUserStatus: (userId: string) => void,
+  getUserProfile: (userId: number) => void,
+  getUserStatus: (userId: number) => void,
   updateUserStatus: (status: string) => void,
 };
 
@@ -29,12 +31,18 @@ const mapStateToProps = (state: RootState): MapStateToProps => {
   return {
     profile: state.profilePage.profile,
     status: state.profilePage.status,
+    authUserId: state.auth.userId,
+    isAuth: state.auth.isAuth,
   };
 };
 
 class ProfileContainer extends Component<ProfileContainerProps> {
   componentDidMount() {
-    const userId = this.props.match.params.userId;
+    let userId: number | null = Number(this.props.match.params.userId);
+
+    if (!userId) {
+      userId = this.props.authUserId;
+    }
 
     if (userId) {
       this.props.getUserProfile(userId);
@@ -43,13 +51,11 @@ class ProfileContainer extends Component<ProfileContainerProps> {
   }
 
   render() {
-    const userId = this.props.match.params.userId;
+    const { profile, status, updateUserStatus } = this.props;
 
-    if (!userId) {
+    if (!profile) {
       return;
     }
-
-    const { profile, status, updateUserStatus } = this.props;
 
     return (
       <Profile
