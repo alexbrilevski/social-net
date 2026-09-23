@@ -50,6 +50,15 @@ class ProfileContainer extends Component<ProfileContainerProps> {
     }
   }
 
+  componentDidUpdate(prevProps: ProfileContainerProps) {
+    const userId = this.props.match.params.userId;
+
+    if (userId && userId !== prevProps.match.params.userId) {
+      this.props.getUserProfile(+userId);
+      this.props.getUserStatus(+userId);
+    }
+  }
+
   render() {
     const { profile, status, updateUserStatus } = this.props;
 
