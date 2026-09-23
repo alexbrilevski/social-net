@@ -1,5 +1,5 @@
 import { stopSubmit } from "redux-form";
-import type { RootAction, RootThunk } from "./store";
+import type { RootThunk } from "./store";
 import { authAPI, profileAPI } from "../api/api";
 import { setUserProfile } from "./profileReducer";
 
@@ -13,15 +13,15 @@ export type AuthAction =
   | ReturnType<typeof setAuthUserData>;
 
 const initState = {
-  userId: 0,
-  email: "",
-  login: "",
+  userId: null as number | null,
+  email: null as string | null,
+  login: null as string | null,
   isAuth: false,
 };
 
 export const authReducer = (
   state: AuthInitState = initState,
-  action: RootAction,
+  action: AuthAction,
 ): AuthInitState => {
   switch (action.type) {
     case AUTH_ACTIONS.SET_AUTH_USER_DATA:
@@ -55,7 +55,7 @@ export const getAuthUserData = (): RootThunk => (dispatch) => {
       if (data.resultCode === 0) {
         const { id, email, login } = data.data;
         dispatch(setAuthUserData(id, email, login, true));
-        return profileAPI.getUserProfile(id.toString());
+        return profileAPI.getUserProfile(id);
       }
     })
     .then((data) => data && dispatch(setUserProfile(data)));

@@ -6,9 +6,9 @@ import defaultAvatar from "../../assets/images/man_avatar.png";
 import styles from "./Header.module.css";
 
 type HeaderProps = {
-  login: string,
+  login: string | null,
   isAuth: boolean,
-  profile: ProfileType,
+  profile: ProfileType | null,
   logout: () => void,
 };
 
@@ -21,7 +21,7 @@ const Header: FC<HeaderProps> = ({ isAuth, profile, login, logout }) => {
         </Link>
       </div>
       <div className={styles["login-block"]}>
-        {isAuth ?
+        {isAuth && profile ?
           !profile.userId ?
             <span>Loading...</span>
             :

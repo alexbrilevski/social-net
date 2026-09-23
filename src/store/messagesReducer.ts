@@ -1,5 +1,4 @@
 import { generateId } from "../utils/helpers";
-import type { RootAction } from "./store";
 
 const DUMMY_CHATS = [
   { id: "c1", userId: "u1", name: "Karina" },
@@ -62,7 +61,7 @@ const initState = {
   messages: DUMMY_MESSAGES,
 };
 
-export const messagesReducer = (state: MessagesPage = initState, action: RootAction): MessagesPage => {
+export const messagesReducer = (state: MessagesPage = initState, action: MessagesAction): MessagesPage => {
   switch (action.type) {
     case MESSAGES_ACTION_TYPES.SEND_NEW_MESSAGE_TO_CHAT: {
       const newMessage: MessageType = {

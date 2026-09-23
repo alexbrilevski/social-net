@@ -20,7 +20,7 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ profile, status, updateUserStatus }
         <img src={avatarSrc} alt="User name" width="150" height="150" />
       </div>
       <div>
-        <h1>{profile?.fullName}</h1>
+        <h1>{profile.fullName}</h1>
         <ProfileStatus
           status={status}
           updateUserStatus={updateUserStatus}

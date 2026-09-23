@@ -1,6 +1,6 @@
 import type { ProfileType } from "../models/profile";
 import { generateId } from "../utils/helpers";
-import type { RootAction, RootThunk } from "./store";
+import type { RootThunk } from "./store";
 import { profileAPI } from "../api/api";
 
 const DUMMY_POSTS = [
@@ -24,7 +24,7 @@ export type PostType = {
 };
 
 export type ProfilePage = {
-  profile: ProfileType,
+  profile: ProfileType | null,
   postsData: Array<PostType>,
   status: string,
 };
@@ -35,12 +35,12 @@ export type ProfileAction =
   | ReturnType<typeof addNewPostAC>;
 
 const initState = {
-  profile: {} as ProfileType,
+  profile: null,
   postsData: DUMMY_POSTS,
   status: "",
 };
 
-export const profileReducer = (state: ProfilePage = initState, action: RootAction): ProfilePage => {
+export const profileReducer = (state: ProfilePage = initState, action: ProfileAction): ProfilePage => {
   switch (action.type) {
     case PROFILE_ACTION_TYPES.SET_PROFILE: {
       return { ...state, profile: action.profile };
@@ -81,11 +81,11 @@ export const addNewPostAC = (postText: string) => {
 };
 
 // Thunk Creators
-export const getUserProfile = (userId: string): RootThunk => (dispatch) => {
+export const getUserProfile = (userId: number): RootThunk => (dispatch) => {
   profileAPI.getUserProfile(userId).then(data => dispatch(setUserProfile(data)));
 };
 
-export const getUserStatus = (userId: string): RootThunk => {
+export const getUserStatus = (userId: number): RootThunk => {
   return (dispatch) => {
     profileAPI.getUserStatus(userId).then(data => dispatch(setUserStatus(data)));
   };

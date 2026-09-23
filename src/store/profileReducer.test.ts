@@ -11,7 +11,7 @@ let state: ProfilePage;
 
 beforeEach(() => {
   state = {
-    profile: {} as ProfileType,
+    profile: null,
     postsData: [
       { id: "p1", postText: "It's my first post", likesCount: 20 },
       { id: "p2", postText: "Hi! How are you?", likesCount: 10 },
@@ -33,7 +33,7 @@ test("New post should be immutably added", () => {
 });
 
 test("Profile data should be immutably added to state", () => {
-  const profileData = {
+  const profileData: ProfileType = {
     userId: 1,
     lookingForAJob: true,
     lookingForAJobDescription: "",

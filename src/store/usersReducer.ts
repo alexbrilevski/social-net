@@ -1,5 +1,5 @@
 import type { User } from "../models/user";
-import type { RootAction, RootThunk } from "./store";
+import type { RootThunk } from "./store";
 import { followAPI, usersAPI } from "../api/api";
 
 const USERS_ACTIONS = {
@@ -34,7 +34,7 @@ const initState = {
 
 export const usersReducer = (
   state = initState,
-  action: RootAction,
+  action: UserActions,
 ): UsersPageState => {
   switch (action.type) {
     case USERS_ACTIONS.SET_USERS: {

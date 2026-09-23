@@ -6,9 +6,9 @@ import type { ProfileType } from "../../models/profile";
 import Header from "./Header";
 
 type MapStateToProps = {
-  login: string,
+  login: string | null,
   isAuth: boolean,
-  profile: ProfileType,
+  profile: ProfileType | null,
 };
 
 type MapDispatchProps = {
