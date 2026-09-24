@@ -1,15 +1,17 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { thunk, type ThunkAction } from "redux-thunk";
-import {reducer as formReducer, type FormAction} from "redux-form";
+import { reducer as formReducer, type FormAction } from "redux-form";
 import { authReducer, type AuthAction } from "./authReducer";
 import { profileReducer, type ProfileAction } from "./profileReducer";
 import { messagesReducer, type MessagesAction } from "./messagesReducer";
 import { usersReducer, type UserActions } from "./usersReducer";
+import { appReducer, type AppAction } from "./appReducer";
 
 export type RootStore = typeof store;
 export type RootState = ReturnType<typeof rootReducer>;
 
 export type RootAction =
+  | AppAction
   | AuthAction
   | ProfileAction
   | MessagesAction
@@ -22,6 +24,7 @@ export type RootThunk<ReturnType = void> = ThunkAction<
 >;
 
 const rootReducer = combineReducers({
+  app: appReducer,
   form: formReducer,
   auth: authReducer,
   profilePage: profileReducer,

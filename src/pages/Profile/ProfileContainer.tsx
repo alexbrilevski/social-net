@@ -42,6 +42,10 @@ class ProfileContainer extends Component<ProfileContainerProps> {
 
     if (!userId) {
       userId = this.props.authUserId;
+
+      if (!userId) {
+        this.props.history.push("/login");
+      }
     }
 
     if (userId) {

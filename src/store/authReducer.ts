@@ -60,7 +60,7 @@ export const setAuthUserProfileData = (fullName: string, photo: string) => {
 
 // Thunk Creators
 export const getAuthUserData = (): RootThunk => (dispatch) => {
-  authAPI
+  return authAPI
     .me()
     .then((data) => {
       if (data.resultCode === 0) {
