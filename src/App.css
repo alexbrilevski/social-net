@@ -1,3 +1,13 @@
+.app-container {
+  display: grid;
+  grid-template-rows: 60px 1fr;
+  grid-template-columns: 2fr 10fr;
+  grid-template-areas: 'header header' 'sidebar content';
+  grid-gap: var(--indent-s);
+  flex-grow: 1;
+  min-height: 100svh;
+}
+
 .main-content {
   grid-area: content;
   border: 1px solid var(--border);

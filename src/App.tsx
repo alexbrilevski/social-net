@@ -37,7 +37,7 @@ class App extends Component<AppProps> {
     }
 
     return (
-      <>
+      <div className="app-container">
         <HeaderContainer />
         <Sidebar />
         <main className="main-content">
@@ -46,7 +46,7 @@ class App extends Component<AppProps> {
           <Route path="/messages/:chatId?" render={() => <MessagesContainer />} />
           <Route path="/users" render={() => <UsersContainer />} />
         </main>
-      </>
+      </div>
     );
   }
 }
