@@ -118,10 +118,11 @@ export const toggleFollowingProgress = (inProgress: boolean, userId: number) => 
 };
 
 // Thunk Creators
-export const fetchUsers = (currentPage: number, pageSize: number): RootThunk => {
+export const fetchUsers = (page: number, pageSize: number): RootThunk => {
   return (dispatch) => {
     dispatch(toggleIsFetching(true));
-    usersAPI.getUsers(currentPage, pageSize).then(data => {
+    dispatch(setCurrentPage(page));
+    usersAPI.getUsers(page, pageSize).then(data => {
       dispatch(toggleIsFetching(false));
       dispatch(setUsers(data.items));
       dispatch(setTotalUsersCount(data.totalCount));

@@ -4,7 +4,6 @@ import type { RootState } from "../../store/store";
 import {
   fetchUsers,
   follow,
-  setCurrentPage,
   unfollow,
   type UsersPageState
 } from "../../store/usersReducer";
@@ -15,7 +14,6 @@ type MapStateToProps = UsersPageState;
 
 type MapDispatchToProps = {
   fetchUsers: (currentPage: number, pageSize: number) => void,
-  setCurrentPage: (pageNumber: number) => void,
   follow: (id: number) => void,
   unfollow: (id: number) => void,
 };
@@ -41,8 +39,7 @@ class UsersContainer extends Component<UsersContainerProps> {
   }
 
   setCurrentPage = (pageNumber: number) => {
-    this.props.fetchUsers(this.props.currentPage, this.props.pageSize);
-    this.props.setCurrentPage(pageNumber);
+    this.props.fetchUsers(pageNumber, this.props.pageSize);
   }
 
   followUser(userId: number) {
@@ -74,7 +71,6 @@ class UsersContainer extends Component<UsersContainerProps> {
 
 export default connect(mapStateToProps, {
   fetchUsers,
-  setCurrentPage,
   follow,
   unfollow,
 })(UsersContainer);
