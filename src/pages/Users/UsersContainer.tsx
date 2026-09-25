@@ -7,6 +7,14 @@ import {
   unfollow,
   type UsersPageState
 } from "../../store/usersReducer";
+import {
+  getCurrentPage,
+  getFollowingInProgress,
+  getIsFetching,
+  getPageSize,
+  getTotalUsersCount,
+  getUsers
+} from "../../store/usersSelectors";
 import Preloader from "../../components/UI/Preloader/Preloader";
 import { UsersList } from "./UsersList";
 
@@ -22,12 +30,12 @@ type UsersContainerProps = MapStateToProps & MapDispatchToProps;
 
 const mapStateToProps = (state: RootState): MapStateToProps => {
   return {
-    users: state.usersPage.users,
-    totalUsersCount: state.usersPage.totalUsersCount,
-    pageSize: state.usersPage.pageSize,
-    currentPage: state.usersPage.currentPage,
-    isFetching: state.usersPage.isFetching,
-    followingInProgress: state.usersPage.followingInProgress,
+    users: getUsers(state),
+    totalUsersCount: getTotalUsersCount(state),
+    pageSize: getPageSize(state),
+    currentPage: getCurrentPage(state),
+    isFetching: getIsFetching(state),
+    followingInProgress: getFollowingInProgress(state),
   };
 };
 
