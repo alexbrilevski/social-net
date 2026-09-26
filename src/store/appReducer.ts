@@ -5,7 +5,7 @@ const APP_ACTIONS = {
   SET_ISINITIALIZED: "app/SET_ISINITIALIZED",
 } as const;
 
-type InitState = typeof initState;
+export type AppInitState = typeof initState;
 
 export type AppAction = ReturnType<typeof setIsInitialized>;
 
@@ -14,9 +14,9 @@ const initState = {
 };
 
 export const appReducer = (
-  state: InitState = initState,
+  state: AppInitState = initState,
   action: AppAction,
-): InitState => {
+): AppInitState => {
   switch (action.type) {
     case APP_ACTIONS.SET_ISINITIALIZED: {
       return { ...state, isInitialized: true };
