@@ -1,11 +1,11 @@
-import type { FC } from "react";
+import { memo, type FC } from "react";
 import type { PostsListProps } from "./PostListContainer";
 import Post from "./Post/Post";
 
 import styles from "./PostsList.module.css";
 import NewPostForm, { type NewPostFormData } from "./NewPostForm/NewPostForm";
 
-const PostsList: FC<PostsListProps> = ({
+const PostsList: FC<PostsListProps> = memo(({
   postsData,
   addPost,
 }) => {
@@ -30,6 +30,6 @@ const PostsList: FC<PostsListProps> = ({
       </div>
     </div>
   );
-};
+});
 
 export default PostsList;
