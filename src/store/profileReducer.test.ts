@@ -5,6 +5,7 @@ import {
   type ProfilePage,
   setUserProfile,
   setUserStatus,
+  deletePostAC,
 } from "./profileReducer";
 
 let state: ProfilePage;
@@ -30,6 +31,16 @@ test("New post should be immutably added", () => {
   expect(newState.postsData.length).toBe(3);
   expect(newState.postsData[0].id).toBe(action.newPostId);
   expect(newState.postsData[0].postText).toBe(newPostText);
+});
+
+test("Post with corresponding Id should be deleted from state", () => {
+  const postId = "p1";
+  const action = deletePostAC(postId);
+
+  const newState = profileReducer(state, action);
+
+  expect(newState).not.toBe(state);
+  expect(newState.postsData.length).toBe(1);
 });
 
 test("Profile data should be immutably added to state", () => {

@@ -14,6 +14,7 @@ const DUMMY_POSTS = [
 const PROFILE_ACTION_TYPES = {
   SET_PROFILE: "profile/SET-USER-PROFILE",
   ADD_NEW_POST: "profile/ADD-NEW-POST",
+  DELETE_POST: "profile/DELETE-POST",
   SET_USER_STATUS: "profile/SET-USER-STATUS",
 } as const;
 
@@ -32,7 +33,8 @@ export type ProfilePage = {
 export type ProfileAction =
   | ReturnType<typeof setUserProfile>
   | ReturnType<typeof setUserStatus>
-  | ReturnType<typeof addNewPostAC>;
+  | ReturnType<typeof addNewPostAC>
+  | ReturnType<typeof deletePostAC>;
 
 const initState = {
   profile: null,
@@ -60,6 +62,9 @@ export const profileReducer = (state: ProfilePage = initState, action: ProfileAc
         postsData: [newPost, ...state.postsData],
       };
     }
+    case PROFILE_ACTION_TYPES.DELETE_POST: {
+      return {...state, postsData: state.postsData.filter(p => p.id !== action.postId)};
+    }
     default: {
       return state;
     }
@@ -78,6 +83,10 @@ export const setUserStatus = (status: string) => {
 export const addNewPostAC = (postText: string) => {
   const newPostId = generateId();
   return { type: PROFILE_ACTION_TYPES.ADD_NEW_POST, newPostId, postText };
+};
+
+export const deletePostAC = (postId: string) => {
+  return { type: PROFILE_ACTION_TYPES.DELETE_POST, postId };
 };
 
 // Thunk Creators
