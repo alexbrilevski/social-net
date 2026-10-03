@@ -1,5 +1,6 @@
 import type { FC, ReactNode } from "react";
-import type { WrappedFieldMetaProps, WrappedFieldProps } from "redux-form";
+import { Field, type WrappedFieldMetaProps, type WrappedFieldProps } from "redux-form";
+import type { FieldValidator } from "../../../utils/validators";
 import s from "./FormControls.module.css";
 
 type FormControlsProps = {
@@ -26,4 +27,29 @@ export const Textarea: FC<WrappedFieldProps> = (props) => {
 export const Input: FC<WrappedFieldProps> = (props) => {
   const { input, meta, ...restProps } = props;
   return <FormControl {...props}><input {...input} {...restProps} /></FormControl>;
+};
+
+export const createField = <FormKeysType extends string>(
+  component: FC<WrappedFieldProps>,
+  name: FormKeysType,
+  id: string | undefined,
+  label: string | undefined,
+  type: string | undefined,
+  validators: Array<FieldValidator>,
+  props = {},
+) => {
+  return (
+    <div className={`${s["form-group"]} ${type === "checkbox" ? s["form-group-checkbox"] : ""}`}>
+      {label && id && type !== "checkbox" && <label htmlFor={id}>{label}</label>}
+      <Field
+        component={component}
+        id={id}
+        name={name}
+        type={type}
+        validate={validators}
+        {...props}
+      />
+      {label && id && type === "checkbox" && <label htmlFor={id}>{label}</label>}
+    </div>
+  );
 };

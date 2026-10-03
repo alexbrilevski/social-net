@@ -1,4 +1,4 @@
-type FieldValidator = (value: string) => string | undefined;
+export type FieldValidator = (value: string) => string | undefined;
 
 export const required: FieldValidator = (value: string) => {
   if (value) return undefined;

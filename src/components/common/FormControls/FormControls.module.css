@@ -21,3 +21,34 @@
   margin-top: var(--indent-xs);
   color: red;
 }
+
+.form-group {
+  margin-bottom: var(--indent-s);
+}
+
+.form-group label {
+  display: inline-block;
+  margin-bottom: var(--indent-xs);
+}
+
+.form-group textarea {
+  min-height: 80px;
+}
+
+.form-group-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--indent-xs);
+}
+
+.form-group-checkbox .form-control {
+  margin-bottom: 0;
+}
+
+.form-group-checkbox label {
+  margin-bottom: 0;
+}
+
+.form-group-checkbox input {
+  margin: 0;
+}
