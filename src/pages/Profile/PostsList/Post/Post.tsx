@@ -3,9 +3,11 @@ import type { PostType } from "../../../../store/profileReducer";
 
 import styles from "./Post.module.css";
 
-type PostProps = PostType;
+type PostProps = PostType & {
+  deletePost: (id: string) => void,
+};
 
-const Post: FC<PostProps> = ({ postText, likesCount }) => {
+const Post: FC<PostProps> = ({ id, postText, likesCount, deletePost }) => {
   return (
     <div className={styles["post"]}>
       <div>
@@ -14,6 +16,9 @@ const Post: FC<PostProps> = ({ postText, likesCount }) => {
       <div className={styles["post-data"]}>
         Likes: {likesCount}
       </div>
+      <button className={styles["delete-post"]} onClick={() => deletePost(id)}>
+        Delete
+      </button>
     </div>
   );
 };

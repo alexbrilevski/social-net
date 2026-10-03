@@ -8,6 +8,7 @@ import NewPostForm, { type NewPostFormData } from "./NewPostForm/NewPostForm";
 const PostsList: FC<PostsListProps> = memo(({
   postsData,
   addPost,
+  deletePost,
 }) => {
   const handleAddPost = (formData: NewPostFormData) => {
     addPost(formData.newPostText);
@@ -23,7 +24,7 @@ const PostsList: FC<PostsListProps> = memo(({
         <ul className={styles["posts-list"]}>
           {postsData.map(post =>
             <li key={post.id}>
-              <Post {...post} />
+              <Post deletePost={deletePost} {...post} />
             </li>
           )}
         </ul>

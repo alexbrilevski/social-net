@@ -1,4 +1,5 @@
 .post {
+  position: relative;
   padding: var(--indent-s);
   border-bottom: 1px solid var(--border);
 }
@@ -6,4 +7,10 @@
 .post-data {
   margin-top: var(--indent-s);
   text-align: right;
+}
+
+.delete-post {
+  position: absolute;
+  top: var(--indent-s);
+  right: var(--indent-s);
 }
