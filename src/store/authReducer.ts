@@ -3,8 +3,8 @@ import type { RootThunk } from "./store";
 import { authAPI, profileAPI } from "../api/api";
 
 const AUTH_ACTIONS = {
-  SET_AUTH_USER_DATA: "auth/SET_AUTH_USER_DATA",
-  SET_AUTH_USER_PROFILE_DATA: "auth/SET_AUTH_USER_PROFILE_DATA",
+  SET_AUTH_USER_DATA: "social-net/auth/SET_AUTH_USER_DATA",
+  SET_AUTH_USER_PROFILE_DATA: "social-net/auth/SET_AUTH_USER_PROFILE_DATA",
 } as const;
 
 export type AuthInitState = typeof initState;
@@ -53,48 +53,49 @@ export const setAuthUserData = (
 
 export const setAuthUserProfileData = (fullName: string, photo: string) => {
   return {
-    type: AUTH_ACTIONS.SET_AUTH_USER_PROFILE_DATA, 
+    type: AUTH_ACTIONS.SET_AUTH_USER_PROFILE_DATA,
     payload: { fullName, photo },
   };
 };
 
 // Thunk Creators
-export const getAuthUserData = (): RootThunk => (dispatch) => {
-  return authAPI
-    .me()
-    .then((data) => {
-      if (data.resultCode === 0) {
-        const { id, email, login } = data.data;
-        dispatch(setAuthUserData(id, email, login, true));
-        return profileAPI.getUserProfile(id);
-      }
-    })
-    .then((data) => data && dispatch(setAuthUserProfileData(data.fullName, data.photos.small)));
+export const getAuthUserData = (): RootThunk => async (dispatch) => {
+  const data = await authAPI.me();
+  if (data.resultCode === 0) {
+    const { id, email, login } = data.data;
+    dispatch(setAuthUserData(id, email, login, true));
+    const authUserProfile = await profileAPI.getUserProfile(id);
+    if (authUserProfile) {
+      dispatch(
+        setAuthUserProfileData(
+          authUserProfile.fullName,
+          authUserProfile.photos.small,
+        ),
+      );
+    }
+  }
 };
 
 export const login = (
-  email: string, 
-  password: string, 
+  email: string,
+  password: string,
   rememberMe: boolean,
 ): RootThunk => {
-  return (dispatch) => {
-    authAPI
-      .login(email, password, rememberMe)
-      .then((data) => {
-        if (data.resultCode === 0) {
-          dispatch(getAuthUserData());
-        } else {
-          const message = data.messages.length > 0 ? data.messages[0] : "Some error";
-          dispatch(stopSubmit("signInForm", {_error: message}));
-        }
-      });
+  return async (dispatch) => {
+    const data = await authAPI.login(email, password, rememberMe);
+    if (data.resultCode === 0) {
+      dispatch(getAuthUserData());
+    } else {
+      const message =
+        data.messages.length > 0 ? data.messages[0] : "Some error";
+      dispatch(stopSubmit("signInForm", { _error: message }));
+    }
   };
 };
 
-export const logout = (): RootThunk => (dispatch) => {
-  authAPI.logout().then(data => {
-    if (data.resultCode === 0) {
-      dispatch(setAuthUserData(0, "", "", false));
-    }
-  });
-}
+export const logout = (): RootThunk => async (dispatch) => {
+  const data = await authAPI.logout();
+  if (data.resultCode === 0) {
+    dispatch(setAuthUserData(0, "", "", false));
+  }
+};

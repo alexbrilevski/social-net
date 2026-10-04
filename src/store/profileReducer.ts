@@ -12,22 +12,22 @@ const DUMMY_POSTS = [
 ];
 
 const PROFILE_ACTION_TYPES = {
-  SET_PROFILE: "profile/SET-USER-PROFILE",
-  ADD_NEW_POST: "profile/ADD-NEW-POST",
-  DELETE_POST: "profile/DELETE-POST",
-  SET_USER_STATUS: "profile/SET-USER-STATUS",
+  SET_PROFILE: "social-net/profile/SET-USER-PROFILE",
+  ADD_NEW_POST: "social-net/profile/ADD-NEW-POST",
+  DELETE_POST: "social-net/profile/DELETE-POST",
+  SET_USER_STATUS: "social-net/profile/SET-USER-STATUS",
 } as const;
 
 export type PostType = {
-  id: string,
-  postText: string,
-  likesCount: number,
+  id: string;
+  postText: string;
+  likesCount: number;
 };
 
 export type ProfilePage = {
-  profile: ProfileType | null,
-  postsData: Array<PostType>,
-  status: string,
+  profile: ProfileType | null;
+  postsData: Array<PostType>;
+  status: string;
 };
 
 export type ProfileAction =
@@ -42,7 +42,10 @@ const initState = {
   status: "",
 };
 
-export const profileReducer = (state: ProfilePage = initState, action: ProfileAction): ProfilePage => {
+export const profileReducer = (
+  state: ProfilePage = initState,
+  action: ProfileAction,
+): ProfilePage => {
   switch (action.type) {
     case PROFILE_ACTION_TYPES.SET_PROFILE: {
       return { ...state, profile: action.profile };
@@ -58,12 +61,15 @@ export const profileReducer = (state: ProfilePage = initState, action: ProfileAc
       };
 
       return {
-        ...state, 
+        ...state,
         postsData: [newPost, ...state.postsData],
       };
     }
     case PROFILE_ACTION_TYPES.DELETE_POST: {
-      return {...state, postsData: state.postsData.filter(p => p.id !== action.postId)};
+      return {
+        ...state,
+        postsData: state.postsData.filter((p) => p.id !== action.postId),
+      };
     }
     default: {
       return state;
@@ -90,23 +96,25 @@ export const deletePostAC = (postId: string) => {
 };
 
 // Thunk Creators
-export const getUserProfile = (userId: number): RootThunk => (dispatch) => {
-  profileAPI.getUserProfile(userId).then(data => dispatch(setUserProfile(data)));
-};
+export const getUserProfile =
+  (userId: number): RootThunk =>
+  async (dispatch) => {
+    const data = await profileAPI.getUserProfile(userId);
+    dispatch(setUserProfile(data));
+  };
 
 export const getUserStatus = (userId: number): RootThunk => {
-  return (dispatch) => {
-    profileAPI.getUserStatus(userId).then(data => dispatch(setUserStatus(data)));
+  return async (dispatch) => {
+    const data = await profileAPI.getUserStatus(userId);
+    dispatch(setUserStatus(data));
   };
 };
 
 export const updateUserStatus = (newStatus: string): RootThunk => {
-  return (dispatch) => {
-    profileAPI.updateUserStatus(newStatus)
-      .then(data => {
-        if (data.resultCode === 0) {
-          dispatch(setUserStatus(newStatus));
-        }
-      });
+  return async (dispatch) => {
+    const data = await profileAPI.updateUserStatus(newStatus);
+    if (data.resultCode === 0) {
+      dispatch(setUserStatus(newStatus));
+    }
   };
 };

@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
   },
 });
 
-type APIResponseData<T = {}> = {
+export type APIResponseData<T = {}> = {
   data: T,
   resultCode: number,
   messages: Array<string>,

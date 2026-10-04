@@ -27,7 +27,7 @@ const DUMMY_MESSAGES = {
 };
 
 const MESSAGES_ACTION_TYPES = {
-  SEND_NEW_MESSAGE_TO_CHAT: "messages/SEND-NEW-MESSAGE-TO-CHAT",
+  SEND_NEW_MESSAGE_TO_CHAT: "social-net/messages/SEND-NEW-MESSAGE-TO-CHAT",
 } as const;
 
 export type ChatType = {

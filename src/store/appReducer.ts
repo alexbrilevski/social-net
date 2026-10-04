@@ -2,7 +2,7 @@ import { getAuthUserData } from "./authReducer";
 import type { RootThunk } from "./store";
 
 const APP_ACTIONS = {
-  SET_ISINITIALIZED: "app/SET_ISINITIALIZED",
+  SET_ISINITIALIZED: "social-net/app/SET_ISINITIALIZED",
 } as const;
 
 export type AppInitState = typeof initState;
