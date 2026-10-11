@@ -32,4 +32,8 @@ const rootReducer = combineReducers({
   usersPage: usersReducer,
 });
 
-export const store = createStore(rootReducer, applyMiddleware(thunk));
+export const store = createStore(
+  rootReducer,
+  undefined,
+  applyMiddleware(thunk),
+);
